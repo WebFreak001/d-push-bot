@@ -18,13 +18,14 @@ void main()
 {
 	config = deserializeJson!Config(parseJsonString(readFileUTF8("config.json")));
 	configDate = getFileInfo("config.json").timeModified;
-	setTimer(10.minutes, (&checkUpdates).toDelegate);
+	setTimer(10.minutes, (&checkUpdates).toDelegate, true);
 	runTask(&checkUpdates);
 	runApplication();
 }
 
 void checkUpdates()
 {
+	logInfo("Checking for updates");
 	auto configModify = getFileInfo("config.json").timeModified;
 	if (configModify > configDate)
 	{
